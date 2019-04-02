@@ -1,5 +1,4 @@
 from flask import Flask
-from redis import Redis, RedisError
 import os
 import socket
 #!flask/bin/python
@@ -7,7 +6,6 @@ from flask import jsonify
 from flask import abort, render_template
 
 # Connect to Redis
-redis = Redis(host="redis", db=0, socket_connect_timeout=2, socket_timeout=2)
 
 application = Flask(__name__)
 

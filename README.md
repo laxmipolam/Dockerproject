@@ -14,7 +14,9 @@ Docker works without .sh file
 
 
 • “docker load -i assignmentlaxmi.tgz” 
+
 • "docker pull laxmipolam/cclaxmi"
+
 • “docker run -d -p 8081:80 laxmipolam/cclaxmi”
 
 # Functionality :

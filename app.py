@@ -11458,16 +11458,16 @@ def create_data():
    return jsonify({'DATE': task['DATE']}), 201
    
 @application.route('/forecast/<dateYYYYMMDD>', methods=['GET'])
-def forecast(dateYYYYMMDD):
+def forecast(YYYYMMDD):
     task=[]
     task = [task for task in weather if (date(int(task['DATE'][0:4]),int(task['DATE'][4:6]),int(task['DATE'][6:])) >= date(int(YYYYMMDD[0:4]),int(YYYYMMDD[4:6]),int(YYYYMMDD[6:]))) and (date(int(task['DATE'][0:4]),int(task['DATE'][4:6]),int(task['DATE'][6:])) < date(int(YYYYMMDD[0:4]),int(YYYYMMDD[4:6]),int(YYYYMMDD[6:])) + timedelta(days = 5))]
     	if task.length < 6:
-            task = [task for task in weather if (2013,int(task['DATE'][4:6]),int(task['DATE'][6:])) >= date(2013,int(YYYYMMDD[4:6]),int(YYYYMMDD[6:]))) and (2013,int(task['DATE'][4:6]),int(task['DATE'][6:])) < date(2013,int(YYYYMMDD[4:6]),int(YYYYMMDD[6:])) + timedelta(days = 5))]
-            task1 = [task for task in weather if (2014,int(task['DATE'][4:6]),int(task['DATE'][6:])) >= date(2014,int(YYYYMMDD[4:6]),int(YYYYMMDD[6:]))) and (2014,int(task['DATE'][4:6]),int(task['DATE'][6:])) < date(2014,int(YYYYMMDD[4:6]),int(YYYYMMDD[6:])) + timedelta(days = 5))]
+            task = [task for task in weather if date(2013,int(task['DATE'][4:6]),int(task['DATE'][6:])) >= date(2013,int(YYYYMMDD[4:6]),int(YYYYMMDD[6:]))) and date(2013,int(task['DATE'][4:6]),int(task['DATE'][6:])) < date(2013,int(YYYYMMDD[4:6]),int(YYYYMMDD[6:])) + timedelta(days = 5))]
+            task1 = [task for task in weather if date(2014,int(task['DATE'][4:6]),int(task['DATE'][6:])) >= date(2014,int(YYYYMMDD[4:6]),int(YYYYMMDD[6:]))) and date(2014,int(task['DATE'][4:6]),int(task['DATE'][6:])) < date(2014,int(YYYYMMDD[4:6]),int(YYYYMMDD[6:])) + timedelta(days = 5))]
             for i in range(len(task)):
                 task[i]["TMIN"] = (task[i]["TMIN"] + task1[i]["TMIN"]) / 2
 	        task[i]["TMAX"] = (task[i]["TMAX"] + task1[i]["TMAX"]) / 2
-	        task[i]["DATE"] = date[0:4] + task[i]["DATE"][4:]
+	        task[i]["DATE"] = date(int(YYYYMMDD[0:4]),int(YYYYMMDD[4:6]),int(YYYYMMDD[6:])) + timedelta(days = i+1)).year + task[i][0:4]
     if len(task)==0:
         abort(404)
     return jsonify(task)

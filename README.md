@@ -3,15 +3,20 @@
 Steps to create Docker Image:
 
 Installed docker on AWS EC2 Instance 
+
 Deployed python service and Html directly into docker in app.py
+
 Created a DockerFile
+
 Created a dockerimage named laxmicc
+
 Docker works without .sh file
 
 How to Run DockerImage:
 
 
-• “docker load -i assignmentlaxmi.tgz” and
+• “docker load -i assignmentlaxmi.tgz” 
+
 • “docker run -d -p 8081:80 cclaxmi”
 
 Functionality :

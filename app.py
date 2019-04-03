@@ -11459,111 +11459,18 @@ def create_data():
    
 @application.route('/forecast/<dateYYYYMMDD>', methods=['GET'])
 def forecast(dateYYYYMMDD):
-    #return request.form.get('date')
-    jsonlist=[]
-    b_found=0
-    count=1
-    initdict={}
-    valdict ={}
-    values=[]
-    tmaxlist1=[]
-    tminlist1=[]
-    tmaxlist2=[]
-    tminlist2=[]
-    tmaxlist3=[]
-    tminlist3=[]
-    for block in weather:
-        for key, value in block.items():
-            if key=='DATE':
-                if value==dateYYYYMMDD:
-                    b_found=1
-            if b_found==1:
-                initdict[key]=value
-        if (b_found and count<=7):
-            count=count+1;
-            jsonlist.append(initdict)
-            #print(jsonlist)
-            initdict={}
-    if b_found==0:
-        date_month=dateYYYYMMDD[4:8]
-        year2013='2013'+date_month
-        year2014='2014'+date_month
-        year2015='2015'+date_month
-        year1count=1
-        year2count=1
-        year3count=1
-        val_found=0
-        date_val=[]
-        for check in weather:
-            if year1count>7:
-                val_found=0
-                break;
-            for key,value in check.items():
-                if key=='DATE':
-                    temp_val=value
-                    if value==year2013:
-                        val_found=1
-                if val_found==1 and year1count<=7:
-                    if key=='TMAX':
-                        date_val.append(temp_val)
-                        valdict={}
-                        valdict[key]=value
-                        tmaxlist1.append(valdict['TMAX'])
-                    if key=='TMIN':
-                        valdict={}
-                        valdict[key]=value
-                        tminlist1.append(valdict['TMIN'])
-                        year1count=year1count+1
-        tmax1=sum(tmaxlist1)
-        tmin1=sum(tminlist1)
-        for check2 in weather:
-            if year2count>7:
-                val_found=0
-            for key,value in check2.items():
-                if key=='DATE':
-                    if value==year2014:
-                        val_found=1
-                if val_found==1 and year2count<=7:
-                    if key=='TMAX':
-                        valdict2={}
-                        valdict2[key]=value
-                        tmaxlist2.append(valdict2['TMAX'])
-                    if key=='TMIN':
-                        valdict2={}
-                        valdict2[key]=value
-                        tminlist2.append(valdict2['TMIN'])
-                        year2count=year2count+1
-        for check3 in weather:
-            if year3count>7:
-                val_found=0
-            for key,value in check3.items():
-                if key=='DATE':
-                    if value==year2015:
-                        val_found=1
-                if val_found==1 and year3count<=7:
-                    if key=='TMAX':
-                        valdict3={}
-                        valdict3[key]=value
-                        tmaxlist3.append(valdict3['TMAX'])
-                    if key=='TMIN':
-                        valdict3={}
-                        valdict3[key]=value
-                        tminlist3.append(valdict3['TMIN'])
-                        year3count=year3count+1
-        forecastdict={}
-        for i in range(0,7):
-            predictday_date=dateYYYYMMDD[0:4]+date_val[i][4:8]
-            predictday_max=(tmaxlist1[i]+tmaxlist2[i]+tmaxlist3[i])/3
-            predictday_min=(tminlist1[i]+tminlist2[i]+tminlist3[i])/3
-            forecastdict['DATE']=predictday_date
-            forecastdict['TMAX']=predictday_max
-            forecastdict['TMIN']=predictday_min
-            jsonlist.append(forecastdict)
-            forecastdict={}
-        
-    if len(jsonlist)==0:
+    task=[]
+    task = [task for task in weather if (date(int(task['DATE'][0:4]),int(task['DATE'][4:6]),int(task['DATE'][6:])) >= date(int(YYYYMMDD[0:4]),int(YYYYMMDD[4:6]),int(YYYYMMDD[6:]))) and (date(int(task['DATE'][0:4]),int(task['DATE'][4:6]),int(task['DATE'][6:])) < date(int(YYYYMMDD[0:4]),int(YYYYMMDD[4:6]),int(YYYYMMDD[6:])) + timedelta(days = 5))]
+		  if task.length < 6:
+		      task = [task for task in weather if (2013,int(task['DATE'][4:6]),int(task['DATE'][6:])) >= date(2013,int(YYYYMMDD[4:6]),int(YYYYMMDD[6:]))) and (2013,int(task['DATE'][4:6]),int(task['DATE'][6:])) < date(2013,int(YYYYMMDD[4:6]),int(YYYYMMDD[6:])) + timedelta(days = 5))]
+		      task1 = [task for task in weather if (2014,int(task['DATE'][4:6]),int(task['DATE'][6:])) >= date(2014,int(YYYYMMDD[4:6]),int(YYYYMMDD[6:]))) and (2014,int(task['DATE'][4:6]),int(task['DATE'][6:])) < date(2014,int(YYYYMMDD[4:6]),int(YYYYMMDD[6:])) + timedelta(days = 5))]
+		  for i in task:
+		      task["TMIN"] = (task["TMIN"] + task["TMIN"]) / 2
+			     task["TMAX"] = (task["TMAX"] + task["TMAX"]) / 2
+			     task["DATE"] = date[0:4] + task["DATE"][4:]
+    if len(task)==0:
         abort(404)
-    return jsonify(jsonlist)
+    return jsonify(task)
 
 from flask import make_response
 

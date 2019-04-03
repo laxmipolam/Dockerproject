@@ -7,9 +7,7 @@ Installed docker on AWS EC2 Instance
 Deployed python service and Html directly into docker in app.py
 
 Created a DockerFile
-
 Created a dockerimage named laxmicc
-
 Docker works without .sh file
 
 How to Run DockerImage:
